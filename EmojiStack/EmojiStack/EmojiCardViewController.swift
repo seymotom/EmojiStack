@@ -18,10 +18,8 @@ class EmojiCardViewController: UIViewController {
     var emptyStackLabel: UILabel = UILabel()
     
     var displayedCardView: EmojiCardView!
-    
     var emojiDeck: [Card] = []
-    
-    
+    var firstTime = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,11 +27,13 @@ class EmojiCardViewController: UIViewController {
         navigationItem.title = "Emoji Stack"
         setUpButtons()
         setUpEmptyStackView()
-        loadDeck()
         displayCard()
+        if firstTime {
+            loadNewDeck()
+        }
     }
     
-    func loadDeck() {
+    func loadNewDeck() {
         emojiDeck += Card.emojiDeck()
     }
     
@@ -49,7 +49,6 @@ class EmojiCardViewController: UIViewController {
                 ].map { $0.isActive = true }
             card.layer.cornerRadius = 20
             card.layer.borderWidth = 2
-            
         }
     }
     
@@ -71,9 +70,6 @@ class EmojiCardViewController: UIViewController {
             emptyStackLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             emptyStackLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ].map { $0.isActive = true }
-        
-        
-        
     }
 
     func setUpButtons() {
@@ -107,22 +103,32 @@ class EmojiCardViewController: UIViewController {
         self.showStackButton.addTarget(self, action: #selector(didPressShowStack(sender:)), for: .touchUpInside)
         self.removeRandomButton.addTarget(self, action: #selector(didPressRemoveRandom(sender:)), for: .touchUpInside)
         self.removeAllButton.addTarget(self, action: #selector(didPressRemoveAll(sender:)), for: .touchUpInside)
-        
     }
     
     func didPressDrawCard(sender: UIButton) {
         let remainingCards: [Card] = emojiDeck.filter { $0.inDeck == true }
         let newVC = EmojiCardViewController()
         if remainingCards.count > 0 {
-            print("\(remainingCards.count) cards remaining <<<")
+            print("\(remainingCards.count - 1) cards remaining <<<")
             let nextCard = remainingCards[Int(arc4random_uniform(UInt32(remainingCards.count)))]
             nextCard.inDeck = false
             newVC.displayedCardView = EmojiCardView(value: nextCard.value, suit: nextCard.suit)
+            newVC.firstTime = false
+            newVC.emojiDeck = emojiDeck
             if let navVC = self.navigationController {
                 navVC.pushViewController(newVC, animated: true)
             }
         } else {
             print("No more cards in deck.")
+            let alertController = UIAlertController(title: "Deck Done", message: "Create a new deck and continue adding to the stack?", preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            let okayAction = UIAlertAction(title: "OK", style: .default) { (_) in
+                self.loadNewDeck()
+                print("40 cards remaining <<<")
+            }
+            alertController.addAction(okayAction)
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
@@ -131,7 +137,11 @@ class EmojiCardViewController: UIViewController {
     }
     
     func didPressShowStack(sender: UIButton) {
-        print("show stack")
+        let stackTVC = EmojiStackTableViewController()
+        stackTVC.emojiDeck = emojiDeck.filter { $0.inDeck == false }
+        if let navVC = self.navigationController {
+            navVC.pushViewController(stackTVC, animated: true)
+        }
     }
     
     func didPressRemoveAll(sender: UIButton) {
