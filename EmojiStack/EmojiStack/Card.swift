@@ -12,6 +12,9 @@ class Card {
     let value: Int
     let suit: String
     var inDeck: Bool
+    var name: String {
+        return String(value) + suit
+    }
     
     init(value: Int, suit: String, inDeck: Bool = true) {
         self.value = value

@@ -133,7 +133,14 @@ class EmojiCardViewController: UIViewController {
     }
     
     func didPressRemoveRandom(sender: UIButton) {
-        print("remove random")
+        let remainingCards: [Card] = emojiDeck.filter { $0.inDeck == false }
+        let card = remainingCards[Int(arc4random_uniform(UInt32(remainingCards.count)))]
+        card.inDeck = true
+        
+        let alert = UIAlertController(title: title, message: "Random Card Removed: \(card.name)", preferredStyle: .alert)
+        let okayAction = UIAlertAction(title: "OK", style: .cancel)
+        alert.addAction(okayAction)
+        present(alert, animated: true, completion: nil)
     }
     
     func didPressShowStack(sender: UIButton) {
@@ -145,7 +152,7 @@ class EmojiCardViewController: UIViewController {
     }
     
     func didPressRemoveAll(sender: UIButton) {
-        print("remove all")
+        _ = emojiDeck.map { $0.inDeck = true }
     }
     
 }
