@@ -25,7 +25,7 @@ class EmojiStackTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = emojiDeck[indexPath.row].name
+        cell.textLabel?.text = emojiDeck.sorted { $0.count! > $1.count! }[indexPath.row].name
         return cell
     }
 }

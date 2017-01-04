@@ -59,10 +59,10 @@
 			isa = PBXGroup;
 			children = (
 				DEE8C2761E09D288004DBB33 /* AppDelegate.swift */,
+				DE6FB3001E0C9DB600E8B5D2 /* Card.swift */,
+				DEE8C2881E09D506004DBB33 /* EmojiCardView.swift */,
 				DEE8C2781E09D288004DBB33 /* EmojiCardViewController.swift */,
 				DE6FB3041E0CC25600E8B5D2 /* EmojiStackTableViewController.swift */,
-				DEE8C2881E09D506004DBB33 /* EmojiCardView.swift */,
-				DE6FB3001E0C9DB600E8B5D2 /* Card.swift */,
 				DEE8C27D1E09D288004DBB33 /* Assets.xcassets */,
 				DEE8C27F1E09D288004DBB33 /* LaunchScreen.storyboard */,
 				DEE8C2821E09D288004DBB33 /* Info.plist */,
@@ -97,7 +97,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "C4Q-3.2";
 				TargetAttributes = {
 					DEE8C2721E09D287004DBB33 = {
@@ -181,6 +181,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -231,6 +232,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -261,6 +263,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = EmojiStack/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = c4q.TomSeymour.EmojiStack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -273,6 +276,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = EmojiStack/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = c4q.TomSeymour.EmojiStack;
 				PRODUCT_NAME = "$(TARGET_NAME)";

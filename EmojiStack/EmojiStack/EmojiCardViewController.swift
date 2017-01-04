@@ -18,19 +18,37 @@ class EmojiCardViewController: UIViewController {
     var emptyStackLabel: UILabel = UILabel()
     
     var displayedCardView: EmojiCardView!
+    var card: Card!
     var emojiDeck: [Card] = []
     var firstTime = true
-    
+    var cardCount = 0
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        navigationItem.title = "Emoji Stack"
+        setUpNavBar()
         setUpButtons()
         setUpEmptyStackView()
         displayCard()
         if firstTime {
             loadNewDeck()
+        } else {
+            print(">>> Card count: \(cardCount)")
         }
+    }
+    
+    func setUpNavBar() {
+        navigationItem.title = "Emoji Stack"
+        if card != nil {
+            self.navigationItem.hidesBackButton = true
+            let newBackButton = UIBarButtonItem(title: "Remove", style: UIBarButtonItemStyle.plain, target: self, action: #selector(navBack))
+            self.navigationItem.leftBarButtonItem = newBackButton
+        }
+    }
+    
+    func navBack() {
+        card.inDeck = true
+        _ = navigationController?.popViewController(animated: true)
     }
     
     func loadNewDeck() {
@@ -112,9 +130,12 @@ class EmojiCardViewController: UIViewController {
             print("\(remainingCards.count - 1) cards remaining <<<")
             let nextCard = remainingCards[Int(arc4random_uniform(UInt32(remainingCards.count)))]
             nextCard.inDeck = false
+            nextCard.count = cardCount + 1
+            newVC.card = nextCard
             newVC.displayedCardView = EmojiCardView(value: nextCard.value, suit: nextCard.suit)
             newVC.firstTime = false
             newVC.emojiDeck = emojiDeck
+            newVC.cardCount = cardCount + 1
             if let navVC = self.navigationController {
                 navVC.pushViewController(newVC, animated: true)
             }
@@ -134,10 +155,18 @@ class EmojiCardViewController: UIViewController {
     
     func didPressRemoveRandom(sender: UIButton) {
         let remainingCards: [Card] = emojiDeck.filter { $0.inDeck == false }
-        let card = remainingCards[Int(arc4random_uniform(UInt32(remainingCards.count)))]
-        card.inDeck = true
+        let randomCardToRemove = remainingCards[Int(arc4random_uniform(UInt32(remainingCards.count)))]
+        randomCardToRemove.inDeck = true
         
-        let alert = UIAlertController(title: title, message: "Random Card Removed: \(card.name)", preferredStyle: .alert)
+        //remove VC that corresponds to that card.
+        guard let vcs = navigationController?.viewControllers else { return }
+        for i in 0..<vcs.count {
+            if let emojiVcToRemove = vcs[i] as? EmojiCardViewController,
+                let card = emojiVcToRemove.card, card.count == randomCardToRemove.count {
+                self.navigationController?.viewControllers.remove(at: i)
+            }
+        }
+        let alert = UIAlertController(title: title, message: "Random Card Removed: \(randomCardToRemove.name)", preferredStyle: .alert)
         let okayAction = UIAlertAction(title: "OK", style: .cancel)
         alert.addAction(okayAction)
         present(alert, animated: true, completion: nil)
@@ -152,6 +181,7 @@ class EmojiCardViewController: UIViewController {
     }
     
     func didPressRemoveAll(sender: UIButton) {
+        _ = navigationController?.popToRootViewController(animated: true)
         _ = emojiDeck.map { $0.inDeck = true }
     }
     

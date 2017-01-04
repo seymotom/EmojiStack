@@ -12,6 +12,7 @@ class Card {
     let value: Int
     let suit: String
     var inDeck: Bool
+    var count: Int?
     var name: String {
         return String(value) + suit
     }
